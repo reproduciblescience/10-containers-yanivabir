@@ -1,0 +1,19 @@
+Type: Compendium
+Package: PB&J
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.1
+Authors@R: 
+    person(given = "Yaniv",
+           family = "Abir",
+           role = c("aut", "cre"),
+           email = "ya2402@columbia.edu",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Who what how and why
+License: The Best Licence
+Depends: 
+    rmarkdown,
+    tidyverse,
+    tm,
+    topicmodels
+Encoding: UTF-8
+LazyData: true
