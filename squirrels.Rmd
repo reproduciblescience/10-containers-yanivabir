@@ -1,0 +1,35 @@
+---
+title: "Central Park Squirrels"
+output: 
+  html_document
+---
+
+This dataset comes from the [2018 Squirrel Census](https://www.thesquirrelcensus.com/about)
+
+## Location plot
+The code plots the locations of all squirrel sightings, colored based on their fur color.
+
+```{r, echo=FALSE, include=FALSE}
+library(tidyverse)
+D = read.csv('2018_Central_Park_Squirrel_Census_-_Squirrel_Data.csv', na.strings = c("", "NA"))
+```
+
+```{r, echo=FALSE}
+ggplot(data = D) + geom_point(mapping = aes(x = X, y = Y, color = Primary.Fur.Color), alpha=0.3, size=1)
+```
+
+## Topic modeling
+Some squirrel sightings also include text descriptions. We can use topic modeling to try to identify the different categories of descriptions people include. This code chunk fits a 2-topic model and prints out the words most associated with each topic.
+```{r, echo=FALSE, include=FALSE}
+library(tm)
+library(topicmodels)
+```
+
+```{r, echo=FALSE}
+corpus <- Corpus(VectorSource(D$Other.Activities %>% na.omit()))
+dtm <- DocumentTermMatrix(corpus, control=list(removePunctuation=TRUE))
+dtm <- removeSparseTerms(dtm, 0.995)  # Require at least 2/437 descriptions to contain term
+dtm <- dtm[apply(dtm , 1, sum) > 0, ]  # Remove descriptions that are now empty
+model <- LDA(dtm, k=2, control=list(seed=4))
+terms(model,4)
+```
